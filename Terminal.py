@@ -27,7 +27,17 @@ elx = 1
 gold = 0
 x = 0
 y = 6
+BASESAVELINES = 10  
 
+inventory = {
+    "weapons": ["fist", "sword", "axe", "dagger", "MASTERSWORD"],
+    "consumables": {
+        "potion": pot,
+        "elixir": elx
+    }
+}
+
+weapons_text = ",".join(inventory["weapons"])
 
 def make_tile(name, enemy=True, open_dirs=None, rot=0):
     if open_dirs is None:
@@ -171,7 +181,7 @@ dmgnum10 = 0
 
 
 
-weapon = {
+weapon_data = {
     "fist": {"damage": [dmgnum1 + 1, dmgnum2 + 1, dmgnum3 + 2, dmgnum4 + 2, dmgnum5 + 3, dmgnum6 + 3, dmgnum7 + 4, dmgnum8 + 4], "delay": 0.07},
     "sword": {"damage": [dmgnum1 + 1, dmgnum2 + 3, dmgnum3 + 3, dmgnum4 + 4, dmgnum5 + 5, dmgnum6 + 6, dmgnum7 + 6, dmgnum8 + 6, dmgnum9 + 6], "delay": 0.08},
     "axe": {"damage": [dmgnum1 + 1, dmgnum2 + 1, dmgnum3 + 1, dmgnum4 + 3, dmgnum5 + 6, dmgnum6 + 8, dmgnum7 + 8, dmgnum8 + 9, dmgnum9 + 10], "delay": 0.1},
@@ -179,32 +189,18 @@ weapon = {
     "MASTERSWORD": {"damage": [dmgnum1 + 100, dmgnum2 + 100, dmgnum3 + 100, dmgnum4 + 100, dmgnum5 + 100], "delay": 0.1}
 }
 
+
+equipped_weapon = "fist"  # Default weapon
 # Weapons
 
-# Fists
-fistdamage = weapon["fist"]["damage"]
-fistdelay = weapon["fist"]["delay"]
-
-# Sword
-sworddamage = weapon["sword"]["damage"]
-sworddelay = weapon["sword"]["delay"]
-
-# Axe
-axedamage = weapon["axe"]["damage"]
-axedelay = weapon["axe"]["delay"]
-
-# Dagger
-daggerdamage = weapon["dagger"]["damage"]
-daggerdelay = weapon["dagger"]["delay"]
-
-# MASTERSWORD (DEV ONLY)
-MASTERSWORDdamage = weapon["MASTERSWORD"]["damage"]
-MASTERSWORDdelay = weapon["MASTERSWORD"]["delay"]
 
 
 
-damage_list = MASTERSWORDdamage   # change to "sword" or "axe"
-weapon_delay = MASTERSWORDdelay   # change to "sword" or "axe"
+
+current_weapon = weapon_data[equipped_weapon]
+
+damage_list = current_weapon["damage"]
+weapon_delay = current_weapon["delay"]
 dmgindex = 0
 
 move_delay = 0.12
@@ -233,7 +229,9 @@ def save():
         str(gold),
         str(x),
         str(y),
-        str(key)
+        str(key),
+        equipped_weapon,
+        weapons_text
     ]
 
     for row in map:
@@ -410,8 +408,14 @@ def rotate_tile(x, y):
     tile = map[y][x]
     tile["rot"] = (tile["rot"] + 1) % 4
 
+def weapon_equip(weapon_name):
+    global equipped_weapon
 
-
+    if weapon_name in inventory["weapons"]:
+        equipped_weapon = weapon_name
+        print(f"{name} equipped {weapon_name}.")
+    else:
+        print(f" You do not have a {weapon_name}.")
 
 
 
@@ -463,7 +467,7 @@ while run:
                 load_list = f.readlines()
                 f.close()
 
-                needed_lines = 9 + (len(map) * len(map[0]))
+                needed_lines = BASESAVELINES + (len(map) * len(map[0]))
 
                 if len(load_list) == needed_lines:
                     name = load_list[0].strip()
@@ -475,8 +479,10 @@ while run:
                     x = int(load_list[6].strip())
                     y = int(load_list[7].strip())
                     key = load_list[8].strip() == "True"
+                    equipped_weapon = load_list[9].strip()
+                    weapons_text = load_list[10].strip()
 
-                    rot_index = 9
+                    rot_index = BASESAVELINES
                     for row in map:
                         for tile in row:
                             tile["rot"] = int(load_list[rot_index].strip())
@@ -522,6 +528,7 @@ while run:
             print("POTIONS: " + str(pot))
             print("ELIXIRS: " + str(elx))
             print("GOLD: " + str(gold))
+            print("EQUIPPED WEAPON: " + equipped_weapon)
             display_y = y_len - y
             print("GRID COORDS:", x, y)
             print("COORDS:", x, display_y)
@@ -536,12 +543,13 @@ while run:
             if x > 0 and can_leave(map[y][x], "west") and can_enter(map[y][x-1], "east"):
                 print("4 - WEST")
             if pot > 0:
-                print("5 - USE POTION (30 HP)")
+                print("5: USE POTION (30 HP)")
             if elx > 0:
-                print("6 - USE ELIXIR (50 HP)")
-            print("7 - ROTATE TILE")
+                print("6: USE ELIXIR (50 HP)")
+            print("7: ROTATE TILE")
             if map[y][x]["tile"] == "shop" or map[y][x]["tile"] == "mayor" or map[y][x]["tile"] == "cave":
-                print("? - ENTER")
+                print("?: ENTER")
+            print("8: INVENTORY")
             dest = input("> ")
             if dest == "0":
                 play = False
@@ -589,6 +597,16 @@ while run:
             elif dest == "7":
                 rotate_tile(x, y)
                 standing = True
+
+            elif dest == "8":
+                clear()
+                print("INVENTORY:")
+                print("WEAPONS: " + ", ".join(inventory["weapons"]))
+                print("EQUIPPED WEAPON: " + equipped_weapon)
+                print("CONSUMABLES:")
+                print("POTIONS: " + str(pot))
+                print("ELIXIRS: " + str(elx))
+                input("> ")
 
             else:
                 standing = True

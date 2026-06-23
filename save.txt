@@ -4,9 +4,11 @@ Riptide
 1
 1
 0
-0
-6
+4
+4
 False
+fist
+fist,sword,axe,dagger,MASTERSWORD
 0
 0
 0
