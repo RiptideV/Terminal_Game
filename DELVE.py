@@ -573,7 +573,7 @@ while run:
 
         if not standing:
             if map[y][x]["e"]:
-                if random.randint(0, 100) <= 30:
+                if random.randint(0, 100) <= 40:
                     fight = True
                     battle()
 
