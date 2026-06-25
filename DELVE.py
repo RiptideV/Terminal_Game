@@ -11,6 +11,7 @@ run = True
 menu = True
 play = False
 rules = False
+changelog = False
 key = False
 fight = False
 standing = True
@@ -468,19 +469,34 @@ while run:
 | |  | |  __| | |  \ \/ / |  __|  
 | |__| | |____| |___\  /  | |____ 
 |_____/|______|______\/   |______|""")
-        print("V.0.1")
+        print("V.0.2")
         print("By: RiptideV")
         print(" ")
         draw()
         print("1: NEW GAME")
         print("2: LOAD GAME")
         print("3: READ THIS BEFORE PLAYING")
-        print("4: QUIT GAME")
+        print("4: CHANGELOG")
+        print("5: QUIT GAME")
         draw()
 
         if rules:
             print("Have pen and paper ready. Your journey will be easier if you draw a map of the labyrinth as you explore it.")
             rules = False
+            choice = ""
+            input(">")
+
+        
+        if changelog:
+            print("""
+            Changelog:
+            - Version 0.2:
+              * Fixed weapon equip bug, chest room deletion bug, and save file corruption bug.
+              * Improved game balance (Increased weapon spawn rates.)
+              * Map balancing (Added more rooms and paths to the labyrinth.)
+              * Added a boss fight with the dragon at the end of the labyrinth. Proper ending!
+            """)
+            changelog = False
             choice = ""
             input(">")
 
@@ -566,6 +582,8 @@ while run:
         elif choice == "3":
                 rules = True
         elif choice == "4":
+                changelog = True
+        elif choice == "5":
                 quit()
 
     while play:
