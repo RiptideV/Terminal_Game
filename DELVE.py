@@ -204,7 +204,7 @@ def save():
         str(y),
         str(key),
         equipped_weapon,
-        weapons_text
+        ",".join(inventory["weapons"])
     ]
 
     for row in map:
@@ -252,7 +252,12 @@ def draw_screen(index):
 
 def battle():
 
-    global fight, play, run, HP, pot, elx, gold, dmgindex, last_move, boss
+    global fight, play, run, HP, pot, elx, gold, dmgindex, last_move, boss, current_weapon, damage_list, weapon_delay, boss
+
+    current_weapon = weapon_data[equipped_weapon]
+    damage_list = current_weapon["damage"]
+    weapon_delay = current_weapon["delay"]
+    dmgindex = 0
     if not boss:
         enemy = random.choice(e_list)
     else:
@@ -426,7 +431,7 @@ def weapon_equip(weapon_name):
 
     if weapon_name in inventory["weapons"]:
         equipped_weapon = weapon_name
-        current_weapon = weapon_data[equipped_weapon]
+        current_weapon = weapon_data[weapon_name]
         damage_list = current_weapon["damage"]
         weapon_delay = current_weapon["delay"]
         dmgindex = 0
@@ -532,6 +537,10 @@ while run:
                     inventory["weapons"] = [w for w in weapons_text.split(",") if w]
 
                     rot_index = BASESAVELINES
+                    current_weapon = weapon_data[equipped_weapon]
+                    damage_list = current_weapon["damage"]
+                    weapon_delay = current_weapon["delay"]
+                    dmgindex = 0
                     for row in map:
                         for tile in row:
                             tile["rot"] = int(load_list[rot_index].strip())
@@ -666,6 +675,7 @@ while run:
                     weapon_choice = input("> ")
                     if weapon_choice.isdigit() and 1 <= int(weapon_choice) <= len(inventory["weapons"]):
                         equipped_weapon = inventory["weapons"][int(weapon_choice) - 1]
+                        weapon_equip(equipped_weapon)
                         print(f"You have equipped the {equipped_weapon}.")
                     else:
                         print("Invalid choice.")
