@@ -68,7 +68,7 @@ CRDG = make_tile("Chest Room: Dagger", False, ["north", "east", "south", "west"]
 CRAX = make_tile("Chest Room: Axe", False, ["north", "east", "south", "west"])
 CREM = make_tile("Chest Room: Empty", False, ["north", "east", "south", "west"])
 ST = make_tile("Starting Room", False, ["north", "east", "south", "west"])
-END = make_tile("Dragon's Lair", False, ["north", "east", "south", "west"])
+END = make_tile("Dragon's Lair", True, ["north", "east", "south", "west"])
 
 # Bridge-style tiles
 BR_NS = make_tile("Hallway", True, ["north", "south"])
@@ -87,10 +87,10 @@ BR_NES = make_tile("T-Junction", True, ["north", "east", "south"])
 map = [
     [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(END)],   # y = 0
     [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(BR_NS)], # y = 1
-    [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(CRAX)], # y = 2
-    [copy_tile(EM),    copy_tile(EM),    copy_tile(CRSW),    copy_tile(BR_ES), copy_tile(BR_EW), copy_tile(BR_EW), copy_tile(BR_WN)], # y = 3
-    [copy_tile(EM),    copy_tile(EM),    copy_tile(BR_NES), copy_tile(BR_WNS), copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 4
-    [copy_tile(EM),    copy_tile(BR_ES), copy_tile(BR_WN), copy_tile(CRDG),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 5
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(CRSW),    copy_tile(EM),    copy_tile(EM),    copy_tile(CRAX),    copy_tile(BR_SW)], # y = 2
+    [copy_tile(EM),    copy_tile(BR_SE),    copy_tile(BR_SW),    copy_tile(BR_WS), copy_tile(BR_WN), copy_tile(BR_SW), copy_tile(BR_WN)], # y = 3
+    [copy_tile(EM),    copy_tile(BR_NS),    copy_tile(BR_NES), copy_tile(BR_WNS), copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 4
+    [copy_tile(BR_SW),    copy_tile(BR_SW), copy_tile(BR_ES), copy_tile(CRDG),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 5
     [copy_tile(ST),    copy_tile(BR_WN), copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM)]     # y = 6
 ]
 
@@ -510,6 +510,7 @@ while run:
             Navigate the labrinth. Find the dragon. Kill it. 
             """)
             draw()
+            input("> ")
             menu = False
             play = True
             
@@ -605,7 +606,7 @@ while run:
             if elx > 0:
                 print("6: USE ELIXIR (50 HP)")
             print("7: USE AMULET (ROTATE TILE)")
-            if map[y][x]["tile"] == "shop" or map[y][x]["tile"] == "mayor" or map[y][x]["tile"] == "END":
+            if map[y][x]["tile"] == "shop" or map[y][x]["tile"] == "mayor" or map[y][x]["tile"] == "Dragon's Lair":
                 print("?: ENTER")
             if map[y][x]["tile"] == "Chest Room: Sword" or map[y][x]["tile"] == "Chest Room: Dagger" or map[y][x]["tile"] == "Chest Room: Axe":
                 print("!: OPEN CHEST")
