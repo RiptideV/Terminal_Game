@@ -1,13 +1,13 @@
-ef
+Riptide
 100
 1
+1
 0
-0
-20
-2
+23
+5
 3
 False
-sword
+axe
 fist
 0
 0
@@ -32,7 +32,7 @@ fist
 0
 0
 0
-2
+0
 0
 0
 0

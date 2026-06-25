@@ -72,7 +72,7 @@
  [],
  False,
  False,
- 1782350510,
+ 1782376965,
  [('run.exe',
    'c:\\Users\\brayd\\OneDrive\\Game Projects\\Text Based '
    'Game\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',

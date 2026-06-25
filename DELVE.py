@@ -422,13 +422,17 @@ def rotate_tile(x, y):
     tile["rot"] = (tile["rot"] + 1) % 4
 
 def weapon_equip(weapon_name):
-    global equipped_weapon
+    global equipped_weapon, current_weapon, damage_list, weapon_delay, dmgindex
 
     if weapon_name in inventory["weapons"]:
         equipped_weapon = weapon_name
+        current_weapon = weapon_data[equipped_weapon]
+        damage_list = current_weapon["damage"]
+        weapon_delay = current_weapon["delay"]
+        dmgindex = 0
         print(f"{name} equipped {weapon_name}.")
     else:
-        print(f" You do not have a {weapon_name}.")
+        print(f"You do not have a {weapon_name}.")
 
 
 def boss_fight():
