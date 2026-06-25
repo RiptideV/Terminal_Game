@@ -27,7 +27,7 @@ elx = 1
 gold = 0
 x = 0
 y = 6
-BASESAVELINES = 10  
+BASESAVELINES = 11  
 
 inventory = {
     "weapons": ["fist"],
@@ -66,6 +66,7 @@ EM = make_tile("empty", False, [])
 CRSW = make_tile("Chest Room: Sword", False, ["north", "east", "south", "west"])
 CRDG = make_tile("Chest Room: Dagger", False, ["north", "east", "south", "west"])
 CRAX = make_tile("Chest Room: Axe", False, ["north", "east", "south", "west"])
+CREM = make_tile("Chest Room: Empty", False, ["north", "east", "south", "west"])
 ST = make_tile("Starting Room", False, ["north", "east", "south", "west"])
 END = make_tile("Dragon's Lair", False, ["north", "east", "south", "west"])
 
@@ -524,6 +525,7 @@ while run:
                     key = load_list[8].strip() == "True"
                     equipped_weapon = load_list[9].strip()
                     weapons_text = load_list[10].strip()
+                    inventory["weapons"] = [w for w in weapons_text.split(",") if w]
 
                     rot_index = BASESAVELINES
                     for row in map:
@@ -672,15 +674,15 @@ while run:
                 if map[y][x]["tile"] == "Chest Room: Sword":
                     print("You found a sword in the chest!")
                     inventory["weapons"].append("sword")
-                    map[y][x] = copy_tile(EM)
+                    map[y][x] = copy_tile(CREM)
                 elif map[y][x]["tile"] == "Chest Room: Dagger":
                     print("You found a dagger in the chest!")
                     inventory["weapons"].append("dagger")
-                    map[y][x] = copy_tile(EM)
+                    map[y][x] = copy_tile(CREM)
                 elif map[y][x]["tile"] == "Chest Room: Axe":
                     print("You found an axe in the chest!")
                     inventory["weapons"].append("axe")
-                    map[y][x] = copy_tile(EM)
+                    map[y][x] = copy_tile(CREM)
                 else:
                     print("There is no chest here.")
                 input("> ")
