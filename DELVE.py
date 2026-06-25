@@ -30,7 +30,7 @@ y = 6
 BASESAVELINES = 10  
 
 inventory = {
-    "weapons": ["fist", "sword", "axe", "dagger", "MASTERSWORD"],
+    "weapons": ["fist"],
     "consumables": {
         "potion": pot,
         "elixir": elx
@@ -61,76 +61,43 @@ def copy_tile(tile):
 
 
 # Tile patterns
-PL = make_tile("plains", True)
-FO = make_tile("forest", True)
-FI = make_tile("fields", False)
-TO = make_tile("town", False)
-HI = make_tile("hills", True)
-MO = make_tile("mountain", True)
-CA = make_tile("cave", True)
-SH = make_tile("shop", False)
-MA = make_tile("mayor", False)
+
 EM = make_tile("empty", False, [])
+CRSW = make_tile("Chest Room: Sword", False, ["north", "east", "south", "west"])
+CRDG = make_tile("Chest Room: Dagger", False, ["north", "east", "south", "west"])
+CRAX = make_tile("Chest Room: Axe", False, ["north", "east", "south", "west"])
+ST = make_tile("Starting Room", False, ["north", "east", "south", "west"])
+END = make_tile("Dragon's Lair", False, ["north", "east", "south", "west"])
 
 # Bridge-style tiles
-BR_NS = make_tile("bridge", True, ["north", "south"])
-BR_EW = make_tile("bridge", True, ["east", "west"])
-BR_NE = make_tile("bridge", True, ["north", "east"])
-BR_ES = make_tile("bridge", True, ["east", "south"])
-BR_SW = make_tile("bridge", True, ["south", "west"])
-BR_WN = make_tile("bridge", True, ["west", "north"])
-BR_ALL = make_tile("bridge", True, ["north", "east", "south", "west"])
+BR_NS = make_tile("Hallway", True, ["north", "south"])
+BR_EW = make_tile("Hallway", True, ["east", "west"])
+BR_NE = make_tile("Corner", True, ["north", "east"])
+BR_ES = make_tile("Corner", True, ["east", "south"])
+BR_SW = make_tile("Corner", True, ["south", "west"])
+BR_WN = make_tile("Corner", True, ["west", "north"])
+BR_WNS = make_tile("Corner", True, ["west", "north", "south"])
+BR_ALL = make_tile("Crossroads", True, ["north", "east", "south", "west"])
+BR_NES = make_tile("T-Junction", True, ["north", "east", "south"])
+
+
 
 
 map = [
-    [copy_tile(PL), copy_tile(PL), copy_tile(EM), copy_tile(PL), copy_tile(FO), copy_tile(MO), copy_tile(CA)],  # y = 0
-    [copy_tile(FO), copy_tile(FO), copy_tile(FO), copy_tile(FO), copy_tile(FO), copy_tile(HI), copy_tile(MO)],  # y = 1
-    [copy_tile(FO), copy_tile(FI), copy_tile(BR_NS), copy_tile(PL), copy_tile(HI), copy_tile(FO), copy_tile(HI)], # y = 2
-    [copy_tile(PL), copy_tile(SH), copy_tile(TO), copy_tile(MA), copy_tile(PL), copy_tile(HI), copy_tile(MO)],  # y = 3
-    [copy_tile(PL), copy_tile(FI), copy_tile(FI), copy_tile(PL), copy_tile(HI), copy_tile(MO), copy_tile(MO)],  # y = 4
-    [copy_tile(PL), copy_tile(FI), copy_tile(FI), copy_tile(PL), copy_tile(HI), copy_tile(MO), copy_tile(MO)],  # y = 5
-    [copy_tile(PL), copy_tile(FI), copy_tile(FI), copy_tile(PL), copy_tile(HI), copy_tile(MO), copy_tile(MO)]   # y = 6
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(END)],   # y = 0
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(BR_NS)], # y = 1
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(CRAX)], # y = 2
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(CRSW),    copy_tile(BR_ES), copy_tile(BR_EW), copy_tile(BR_EW), copy_tile(BR_WN)], # y = 3
+    [copy_tile(EM),    copy_tile(EM),    copy_tile(BR_NES), copy_tile(BR_WNS), copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 4
+    [copy_tile(EM),    copy_tile(BR_ES), copy_tile(BR_WN), copy_tile(CRDG),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM)],    # y = 5
+    [copy_tile(ST),    copy_tile(BR_WN), copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM),    copy_tile(EM)]     # y = 6
 ]
 
 y_len = len(map) - 1
 x_len = len(map[0]) - 1
 
 
-biome = {
-    "plains": {
-        "t": "plains",
-        "e": True},
-    "forest": {
-        "t": "forest",
-        "e": True},
-    "fields": {
-        "t": "fields",
-        "e": False},
-    "town": {
-        "t": "town",
-        "e": False},
-    "hills": {
-        "t": "hills",
-        "e": True},
-    "mountain": {
-        "t": "mountain",
-        "e": True},
-    "cave": {
-        "t": "cave",
-        "e": True},
-    "shop": {
-        "t": "shop",
-        "e": False},
-    "bridge": {
-        "t": "bridge",
-        "e": True},
-    "major": {
-        "t": "major",
-        "e": False},
-    "void": {
-        "t": "empty",
-        "e": False},
-}
+
 
 e_list = ["Skeleton", "Goblin", "Zombie", "Ghost", "Mummy"]
 
@@ -159,6 +126,11 @@ mobs = {
         "hp": 35,
         "atk": random.randint(9,12),
         "g": 15
+    },
+    "Dragon": {
+        "hp": 100,
+        "atk": random.randint(10,15),
+        "g": 100
     }
 }
 
@@ -279,9 +251,11 @@ def draw_screen(index):
 
 def battle():
 
-    global fight, play, run, HP, pot, elx, gold, dmgindex, last_move
-
-    enemy = random.choice(e_list)
+    global fight, play, run, HP, pot, elx, gold, dmgindex, last_move, boss
+    if not boss:
+        enemy = random.choice(e_list)
+    else:
+        enemy = "Dragon"
     hp = mobs[enemy]["hp"]
     hpmax = hp
     atk = mobs[enemy]["atk"]
@@ -369,9 +343,47 @@ def battle():
             fight = False
             gold += g
             print("You found " + str(gold) + " gold on the " + enemy + ".")
-            if random.randint(0, 100) <= 10:  # 20% chance of potion drop
+            if random.randint(0, 100) <= 30:  # 30% chance of potion drop
                 pot += 1
                 print("The " + enemy + " dropped a potion.")
+            if random.randint(0, 100) <= 10:  # 10% chance of elixir drop
+                elx += 1
+                print("The " + enemy + " dropped an elixir.")
+            if enemy == "Dragon":
+                draw()
+                print("""
+                After all this time you have finally defeated the dragon.
+                You have avenged your village and spared many others the same fate as yours.
+                Now you can finally rest, knowing that the dragon will never harm anyone again.
+                """)
+                print("""
+                       .-.
+                       |/|
+                       |/|
+                       |/|
+                       |/|
+                    ___|_|___
+                    )  ___  (
+                   /__/ | \__\
+                      ) | (
+                      ) | (
+                      ) | (
+                      ) | (
+                      | | |
+                      | | |
+                      | | |
+                      | | |
+                      | | |
+                      | | |
+                ______| | |______
+
+                """)
+                draw()
+                print("Thanks for playing my first game!: RiptideV (Pufferfish)")
+                draw()
+                boss = False
+                play = False
+                run = False
             
             input("> ")
             clear()
@@ -418,7 +430,21 @@ def weapon_equip(weapon_name):
         print(f" You do not have a {weapon_name}.")
 
 
+def boss_fight():
+    global boss, fight
 
+    while boss:
+        clear()
+        draw()
+        print("""
+        Here lies the dragon. After all this time and all this pain you have finally found it.
+        It's massive form towers over you, its scales glinting in the dim light of the cavern.
+        The dragon lets out a deafening roar, shaking the very walls of the labyrinth.
+        This is it. The final battle. 
+        """)
+        draw()
+        fight = True
+        battle()
 
 
 
@@ -438,12 +464,12 @@ while run:
         draw()
         print("1: NEW GAME")
         print("2: LOAD GAME")
-        print("3: RULES")
+        print("3: READ THIS BEFORE PLAYING")
         print("4: QUIT GAME")
         draw()
 
         if rules:
-            print("These are the rules of the game: ")
+            print("Have pen and paper ready. Your journey will be easier if you draw a map of the labyrinth as you explore it.")
             rules = False
             choice = ""
             input(">")
@@ -456,6 +482,23 @@ while run:
             clear()
             draw()
             name = input("What is your name? ")
+            draw()
+            clear()
+            draw()
+            print("""
+            4 years ago, your village was attacked by a fearsome dragon. You were the only survivor.
+            After years of training and tracking down dead ends you have finally located the dragon's lair.
+            The dragon resides deep inside the ruins of the Twisting Labyrinth, a maze of tunnles and catacombs that have been there for centuries.
+            Preparing yourself, you enter the Twisting Labyrinth, ready to finally get your revenge.
+            """)
+            draw()
+            print("""
+            As you step into the labyrinth, you see a pedestal holding an amulet, it has twisting marks engraved all over it.
+            You take it and put it around your neck, and you feel a sleep come over you.
+            You wake up in a empty cobblestone room, with a single door.
+            You have no weapons, and only 1 potion and 1 elixir.
+            Navigate the labrinth. Find the dragon. Kill it. 
+            """)
             draw()
             menu = False
             play = True
@@ -546,9 +589,11 @@ while run:
                 print("5: USE POTION (30 HP)")
             if elx > 0:
                 print("6: USE ELIXIR (50 HP)")
-            print("7: ROTATE TILE")
-            if map[y][x]["tile"] == "shop" or map[y][x]["tile"] == "mayor" or map[y][x]["tile"] == "cave":
+            print("7: USE AMULET (ROTATE TILE)")
+            if map[y][x]["tile"] == "shop" or map[y][x]["tile"] == "mayor" or map[y][x]["tile"] == "END":
                 print("?: ENTER")
+            if map[y][x]["tile"] == "Chest Room: Sword" or map[y][x]["tile"] == "Chest Room: Dagger" or map[y][x]["tile"] == "Chest Room: Axe":
+                print("!: OPEN CHEST")
             print("8: INVENTORY")
             dest = input("> ")
             if dest == "0":
@@ -606,6 +651,38 @@ while run:
                 print("CONSUMABLES:")
                 print("POTIONS: " + str(pot))
                 print("ELIXIRS: " + str(elx))
+                print("1 - EQUIP WEAPON")
+                possibleequip = input("> ")
+                if possibleequip == "1":
+                    print("Which weapon would you like to equip?")
+                    for i, weapon in enumerate(inventory["weapons"]):
+                        print(f"{i+1} - {weapon}")
+                    weapon_choice = input("> ")
+                    if weapon_choice.isdigit() and 1 <= int(weapon_choice) <= len(inventory["weapons"]):
+                        equipped_weapon = inventory["weapons"][int(weapon_choice) - 1]
+                        print(f"You have equipped the {equipped_weapon}.")
+                    else:
+                        print("Invalid choice.")
+            elif dest == "?":
+                if map[y][x]["tile"] == "Dragon's Lair":
+                    boss = True
+                    fight = True
+                    battle()
+            elif dest == "!":
+                if map[y][x]["tile"] == "Chest Room: Sword":
+                    print("You found a sword in the chest!")
+                    inventory["weapons"].append("sword")
+                    map[y][x] = copy_tile(EM)
+                elif map[y][x]["tile"] == "Chest Room: Dagger":
+                    print("You found a dagger in the chest!")
+                    inventory["weapons"].append("dagger")
+                    map[y][x] = copy_tile(EM)
+                elif map[y][x]["tile"] == "Chest Room: Axe":
+                    print("You found an axe in the chest!")
+                    inventory["weapons"].append("axe")
+                    map[y][x] = copy_tile(EM)
+                else:
+                    print("There is no chest here.")
                 input("> ")
 
             else:
